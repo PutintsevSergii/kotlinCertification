@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.certification.putintsevsergii.certification.R
 import com.certification.putintsevsergii.certification.TopChartsViewModel
+import com.certification.putintsevsergii.certification.extensions.afterTextChanged
 import com.certification.putintsevsergii.certification.extensions.observe
 import com.certification.putintsevsergii.certification.extensions.withViewModel
 import com.certification.putintsevsergii.certification.topSongs.adapters.AlbumsAdapter
@@ -30,6 +31,10 @@ class TopSongsFragment: Fragment() {
 
         activity?.withViewModel<TopChartsViewModel>{
             observe(albums, ::onAlbums)
+        }
+
+        searchField.afterTextChanged {
+
         }
     }
 
