@@ -12,9 +12,10 @@ fun ImageView.show(imageUrl: String? = "") {
 
     if (context == null) return
 
-    if (context is Activity && ((context as Activity).isFinishing || (context as Activity).isDestroyed)) return
+    val ctx = context
+    if (ctx is Activity && (ctx.isFinishing || ctx.isDestroyed)) return
 
-    Glide.with(context)
+    Glide.with(ctx)
             .load(imageUrl)
             .into(this)
 }
@@ -22,7 +23,8 @@ fun ImageView.show(imageUrl: String? = "") {
 fun ImageView.show(imageUri: Uri) {
     if (context == null) return
 
-    if (context is Activity && ((context as Activity).isFinishing || (context as Activity).isDestroyed)) return
+    val ctx = context
+    if (ctx is Activity && (ctx.isFinishing || ctx.isDestroyed)) return
 
     Glide.with(context)
             .load(imageUri)

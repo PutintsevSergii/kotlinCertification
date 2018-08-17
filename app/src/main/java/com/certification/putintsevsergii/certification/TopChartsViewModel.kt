@@ -8,28 +8,19 @@ import com.certification.putintsevsergii.certification.topSongs.data.AlbumItem
 
 class TopChartsViewModel(private val topChartsRepository: TopChartsRepository): ViewModel() {
 
-    var networkOperationProgress: MutableLiveData<Boolean> = MutableLiveData()
-    val albums: MutableLiveData<List<AlbumItem?>> = MutableLiveData()
+    val networkOperationProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val albums: MutableLiveData<List<AlbumItem>> = MutableLiveData()
 
     init {
         loadTopCharts()
     }
 
-    fun loadTopCharts() {
+    private fun loadTopCharts() {
         launchOnUI {
             networkOperationProgress.postValue(true)
-            try {
-                val result = asyncAwait{
-                    topChartsRepository.fetchTopSongCarts(10)// todo get from SP
-                }
-                albums.postValue(result)
-                networkOperationProgress.postValue(false)
-            } catch (e: Exception) {
-                networkOperationProgress.postValue(false)
-
-            }
-
-
+            albums.value = try { asyncAwait {topChartsRepository.fetchTopSongCarts(10) }}
+            catch (error: Exception ) { ArrayList() }
+            networkOperationProgress.postValue(false)
         }
     }
 

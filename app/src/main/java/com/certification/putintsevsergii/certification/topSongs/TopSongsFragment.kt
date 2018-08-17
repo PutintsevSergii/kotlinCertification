@@ -18,11 +18,7 @@ import kotlinx.android.synthetic.main.fragment_top_charts.*
 
 class TopSongsFragment: Fragment() {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: AlbumsAdapter? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        layoutManager = LinearLayoutManager(activity)
         return inflater.inflate(R.layout.fragment_top_charts, container, false)
     }
 
@@ -38,12 +34,12 @@ class TopSongsFragment: Fragment() {
         }
     }
 
-    private fun onAlbums(albums: List<AlbumItem?>?) {
-        adapter = AlbumsAdapter(albums) {
-
+    private fun onAlbums(albums: List<AlbumItem>?) {
+        albums?.let {
+            albumsList.layoutManager = LinearLayoutManager(activity)
+            albumsList.adapter = AlbumsAdapter(it) {
+            }
         }
-        albumsList.layoutManager = layoutManager
-        albumsList.adapter = adapter
     }
 
 }

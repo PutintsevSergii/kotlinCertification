@@ -25,10 +25,7 @@ class MainActivity: AppCompatActivity() {
 
     private fun changeLoadingStatus(status: Boolean?) {
         status?.let {
-            when (it) {
-                true -> loadingStatusBar.visibility = View.VISIBLE
-                false -> loadingStatusBar.visibility = View.INVISIBLE
-            }
+            loadingStatusBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
 
     }

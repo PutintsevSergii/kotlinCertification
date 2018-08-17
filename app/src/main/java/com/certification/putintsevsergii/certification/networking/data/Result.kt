@@ -12,5 +12,5 @@ data class Result(
         @Json(name = "artistId") val artistId: String?,
         @Json(name = "artworkUrl100") val artworkUrl100: String?
 ) {
-    fun toAlbumItem(): AlbumItem? = AlbumItem(id, artistName, name, releaseDate, copyright, artistId, artworkUrl100)
+    fun toAlbumItem() = AlbumItem(id, artistName, name, releaseDate, copyright, artistId, artworkUrl100)
 }
