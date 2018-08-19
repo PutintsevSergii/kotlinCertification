@@ -7,12 +7,9 @@ fun launchOnUI(block: suspend CoroutineScope.() -> Unit): Job {
     return launch(context = UI) { block() }
 }
 
-suspend fun <T> async(block: suspend CoroutineScope.() -> T): Deferred<T> {
-    return async(CommonPool) { block() }
-}
 
 suspend fun <T> asyncAwait(block: suspend CoroutineScope.() -> T): T {
-    return async(block).await()
+    return async { block() }.await()
 }
 
 infix fun <T> Deferred<T>.then(block: (T) -> Unit): Job {
