@@ -11,7 +11,7 @@ interface AlbumsDao {
     @get:Query("SELECT * FROM albums")
     val all: List<AlbumItemData>
 
-    @Query("SELECT * FROM albums WHERE remoteId LIKE :remoteId")
+    @Query("SELECT * FROM albums WHERE id LIKE :remoteId")
     fun findById(remoteId: String): LiveData<AlbumItemData>
 
     @Query("SELECT * FROM albums")
@@ -19,6 +19,9 @@ interface AlbumsDao {
 
     @Insert(onConflict = REPLACE)
     fun insert(album: AlbumItemData)
+
+    @Insert(onConflict = REPLACE)
+    fun insert(albums: List<AlbumItemData>)
 
     @Update
     fun update(album: AlbumItemData)
