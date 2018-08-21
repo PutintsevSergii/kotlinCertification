@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.certification.putintsevsergii.certification.R
 import com.certification.putintsevsergii.certification.TopChartsViewModel
+import com.certification.putintsevsergii.certification.extensions.observe
 import com.certification.putintsevsergii.certification.extensions.withViewModel
 import com.certification.putintsevsergii.certification.songsDetails.media.MusicObserver
+import com.certification.putintsevsergii.certification.topSongs.data.AlbumItem
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment: Fragment() {
@@ -26,9 +28,14 @@ class DetailsFragment: Fragment() {
         }
 
         activity?.withViewModel<TopChartsViewModel> {
-
+            observe(currentlySelectedAlbum, ::onSelectedItemUpdated)
         }
+    }
 
+    private fun onSelectedItemUpdated(item: AlbumItem?) {
+        nameTV.text = item?.name
+        releaseDateTv.text = item?.releaseDate
+        copyrightTv.text = item?.copyright
     }
 
 }

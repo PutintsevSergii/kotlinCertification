@@ -26,7 +26,8 @@ class MainActivity: AppCompatActivity(), TopSongNavigationInterface {
             observe(networkOperationProgress, ::changeLoadingStatus)
         }
 
-        replaceFragment(TopSongsFragment(), R.id.fragmentHolder )
+        if(savedInstanceState == null)
+            replaceFragment(TopSongsFragment(), R.id.fragmentHolder )
     }
 
     private fun changeLoadingStatus(status: Boolean?) {

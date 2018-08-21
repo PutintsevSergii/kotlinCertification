@@ -11,17 +11,20 @@ class TopChartsViewModel(private val topChartsRepository: TopChartsRepository): 
     val networkOperationProgress: MutableLiveData<Boolean> = MutableLiveData()
     val albums: MutableLiveData<List<AlbumItem>> = MutableLiveData()
 
+    val currentlySelectedAlbum: MutableLiveData<AlbumItem> = MutableLiveData()
+
     init {
         loadTopCharts()
     }
 
     fun changeItemSelection(item: AlbumItem) {
-        launchOnUI {
-            asyncAwait {
-                topChartsRepository.updateItem(item)
-                topChartsRepository.getOfflineAlbums()
-            }
-        }
+//        launchOnUI {
+//            asyncAwait {
+//                topChartsRepository.updateItem(item)
+//                topChartsRepository.getOfflineAlbums()
+//            }
+//        }
+        currentlySelectedAlbum.value = item
     }
 
     private fun loadTopCharts() {
