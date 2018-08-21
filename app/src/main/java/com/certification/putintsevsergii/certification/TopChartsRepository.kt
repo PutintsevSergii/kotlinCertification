@@ -1,11 +1,8 @@
 package com.certification.putintsevsergii.certification
 
 import com.certification.putintsevsergii.certification.database.AppDatabase
-import com.certification.putintsevsergii.certification.database.Database
-import com.certification.putintsevsergii.certification.extensions.asyncAwait
-import com.certification.putintsevsergii.certification.extensions.launchOnUI
+import com.certification.putintsevsergii.certification.database.entities.AlbumItemData
 import com.certification.putintsevsergii.certification.networking.NetworkManager
-import com.certification.putintsevsergii.certification.networking.Networking
 import com.certification.putintsevsergii.certification.topSongs.data.AlbumItem
 
 class TopChartsRepository(private val networkManager: NetworkManager, private val database: AppDatabase?) {
@@ -19,13 +16,20 @@ class TopChartsRepository(private val networkManager: NetworkManager, private va
         return albumItems
     }
 
-    private fun saveData(items: List<AlbumItem>) {
-
-        launchOnUI {
-            asyncAwait {
-                // val b = a //todo save data here
-            }
-
+    fun getOfflineAlbums(): List<AlbumItem> {
+        val result = database?.albumsDao()?.all
+        result?.let {
+            return it.map { it.toAlbumItem() }
         }
+        return ArrayList()
+    }
+
+    fun updateItem(item: AlbumItem) {
+        val dataItem = AlbumItemData(item)
+        database?.albumsDao()?.update(dataItem)
+    }
+
+    private fun saveData(items: List<AlbumItem>) {
+        database?.albumsDao()?.insert(items.map { AlbumItemData(it) })
     }
 }

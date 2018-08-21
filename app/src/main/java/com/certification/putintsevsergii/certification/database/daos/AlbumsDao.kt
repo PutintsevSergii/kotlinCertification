@@ -1,4 +1,4 @@
-package com.certification.putintsevsergii.certification.topSongs.data.database
+package com.certification.putintsevsergii.certification.database.daos
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*

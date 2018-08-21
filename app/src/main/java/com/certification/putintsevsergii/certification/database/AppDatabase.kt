@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.certification.putintsevsergii.certification.database.entities.AlbumItemData
-import com.certification.putintsevsergii.certification.topSongs.data.database.AlbumsDao
+import com.certification.putintsevsergii.certification.database.daos.AlbumsDao
 
 @Database(entities = [(AlbumItemData::class)], version = 1)
 abstract class AppDatabase : RoomDatabase() {

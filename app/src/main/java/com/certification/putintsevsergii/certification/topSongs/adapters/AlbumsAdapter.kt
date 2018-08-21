@@ -11,7 +11,7 @@ import com.certification.putintsevsergii.certification.extensions.show
 import com.certification.putintsevsergii.certification.topSongs.data.AlbumItem
 import kotlinx.android.synthetic.main.item_album.view.*
 
-class AlbumsAdapter(private val items: List<AlbumItem>, private val clickListener: (AlbumItem?) -> Unit?) : RecyclerView.Adapter<AlbumsAdapter.AlbumItemViewHolder>() {
+class AlbumsAdapter(private val items: List<AlbumItem>, private val clickListener: (AlbumItem) -> Unit?) : RecyclerView.Adapter<AlbumsAdapter.AlbumItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             AlbumItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_album,
             parent, false))

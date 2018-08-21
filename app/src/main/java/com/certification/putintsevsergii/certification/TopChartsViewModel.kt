@@ -15,11 +15,20 @@ class TopChartsViewModel(private val topChartsRepository: TopChartsRepository): 
         loadTopCharts()
     }
 
+    fun changeItemSelection(item: AlbumItem) {
+        launchOnUI {
+            asyncAwait {
+                topChartsRepository.updateItem(item)
+                topChartsRepository.getOfflineAlbums()
+            }
+        }
+    }
+
     private fun loadTopCharts() {
         launchOnUI {
             networkOperationProgress.postValue(true)
             albums.value = try { asyncAwait {topChartsRepository.fetchTopSongCarts(10) }}
-            catch (error: Exception ) { ArrayList() }
+            catch (error: Throwable ) { asyncAwait { topChartsRepository.getOfflineAlbums() } }
             networkOperationProgress.postValue(false)
         }
     }
