@@ -23,12 +23,23 @@ class DetailsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         playSongBtn.setOnClickListener {
+            activity?.withViewModel<TopChartsViewModel>{
+                startMusic(activity)
+            }
+        }
+
+        playSongBtn1.setOnClickListener {
             //done really simple to show how it works in real world
             lifecycle.addObserver(MusicObserver(activity))
         }
 
         activity?.withViewModel<TopChartsViewModel> {
             observe(currentlySelectedAlbum, ::onSelectedItemUpdated)
+            addObserver(this@DetailsFragment)
+
+            if (savedInstanceState == null) {
+                resetPlayState()
+            }
         }
     }
 
@@ -37,5 +48,4 @@ class DetailsFragment: Fragment() {
         releaseDateTv.text = item?.releaseDate
         copyrightTv.text = item?.copyright
     }
-
 }

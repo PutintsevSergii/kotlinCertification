@@ -3,6 +3,7 @@ package com.certification.putintsevsergii.certification.topSongs
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,13 @@ import com.certification.putintsevsergii.certification.topSongs.adapters.AlbumsA
 import com.certification.putintsevsergii.certification.topSongs.data.AlbumItem
 import kotlinx.android.synthetic.main.fragment_top_charts.*
 
-class TopSongsFragment: Fragment() {
+class TopSongsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun onRefresh() {
+        activity?.withViewModel<TopChartsViewModel>{
+            loadTopCharts()
+        }
+
+    }
 
     private var listener: TopSongNavigationInterface? = null
 
@@ -32,12 +39,15 @@ class TopSongsFragment: Fragment() {
         activity?.withViewModel<TopChartsViewModel>{
             observe(albums, ::onAlbums)
         }
+
+        swipe_container.setOnRefreshListener(this)
 //        searchField.afterTextChanged {
 //
 //        }
     }
 
     private fun onAlbums(albums: List<AlbumItem>?) {
+        swipe_container.isRefreshing = false
         albums?.let {
             albumsList.layoutManager = LinearLayoutManager(activity)
             albumsList.adapter = AlbumsAdapter(it) {
