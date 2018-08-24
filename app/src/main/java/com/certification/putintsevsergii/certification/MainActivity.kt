@@ -2,7 +2,9 @@ package com.certification.putintsevsergii.certification
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.certification.putintsevsergii.certification.extensions.addFragment
@@ -24,7 +26,10 @@ class MainActivity: AppCompatActivity(), TopSongNavigationInterface {
 
         withViewModel<TopChartsViewModel> {
             observe(networkOperationProgress, ::changeLoadingStatus)
+            observe(networkError, ::onNetworkMessagePosted)
         }
+
+        if (!isNetworkAvailable()) onNetworkMessagePosted("Looks like you are offline")
 
         if(savedInstanceState == null)
             replaceFragment(TopSongsFragment(), R.id.fragmentHolder )
@@ -36,10 +41,25 @@ class MainActivity: AppCompatActivity(), TopSongNavigationInterface {
         }
     }
 
-    private fun isNetworkConnected(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
+    private fun onNetworkMessagePosted(message: String?) {
+        message?.let {
+            Snackbar.make(
+                    fragmentHolder,
+                    it,
+                    Snackbar.LENGTH_SHORT
+            ).show()
+        }
+        withViewModel<TopChartsViewModel> {
+            resetNetworkErrors()
+        }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
 }

@@ -15,6 +15,8 @@ class TopChartsViewModel(private val topChartsRepository: TopChartsRepository): 
 
     val currentlySelectedAlbum: MutableLiveData<AlbumItem> = MutableLiveData()
 
+    val networkError: MutableLiveData<String> = MutableLiveData()
+
     init {
         loadTopCharts()
     }
@@ -29,11 +31,17 @@ class TopChartsViewModel(private val topChartsRepository: TopChartsRepository): 
         currentlySelectedAlbum.value = item
     }
 
+    fun resetNetworkErrors() {
+        networkError.postValue(null)
+    }
+
     fun loadTopCharts() {
         launchOnUI {
             networkOperationProgress.postValue(true)
             albums.value = try { asyncAwait {topChartsRepository.fetchTopSongCarts(10) }}
-            catch (error: Throwable ) { asyncAwait { topChartsRepository.getOfflineAlbums() } }
+            catch (error: Throwable ) {
+                networkError.value = error.message
+                asyncAwait { topChartsRepository.getOfflineAlbums() } }
             networkOperationProgress.postValue(false)
         }
     }
